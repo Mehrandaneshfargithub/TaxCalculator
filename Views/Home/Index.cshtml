@@ -1,0 +1,637 @@
+﻿    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .main-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+
+        .section-card {
+            background: #f8f9fc;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+            .section-card:hover {
+                border-color: #667eea;
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            }
+
+        .section-title {
+            color: #495057;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            .section-title::before {
+                content: '';
+                width: 4px;
+                height: 24px;
+                background: #667eea;
+                border-radius: 2px;
+            }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+                background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            }
+
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 0.6rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+            .form-control:focus, .form-select:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            }
+
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+            .table thead {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+
+        .table-dark {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        #CityGrid tr {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+            #CityGrid tr:hover {
+                background-color: #f8f9fc !important;
+                transform: scale(1.01);
+            }
+
+            #CityGrid tr.selected {
+                background-color: #667eea !important;
+                color: white;
+            }
+
+        .input-group-custom {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 2rem;
+        }
+
+        }
+
+        .alert-info {
+            background: #e7f3ff;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            color: #495057;
+        }
+    </style>
+
+
+    <div class="container">
+        <div class="main-container">
+            
+
+            
+            <div class="section-card">
+                <h3 class="section-title">Add New City</h3>
+                <div class="row g-2">
+                    <div class="col-md-8">
+                        <input type="text" id="cityName" class="form-control" placeholder="Enter city name" />
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary w-100" onclick="AddCity()">Add City</button>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="section-card">
+                <h3 class="section-title">City List</h3>
+                <div class="alert alert-info mb-3">
+                    <small><strong>Tip:</strong> Click on a city row to select it for holidays, vehicles, and tax configuration.</small>
+                </div>
+                <div class="table-container">
+                    <table class="table table-hover table-striped text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>City Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="CityGrid">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            
+            <div class="row">
+                
+                <div class="col-lg-4 mb-3">
+                    <div class="section-card h-100">
+                        <h3 class="section-title">Add Holiday</h3>
+                        <div class="mb-3">
+                            <input type="text" id="holidayDate" class="form-control" placeholder="Select date" />
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="submitHolidayDate()">Add Holiday</button>
+                    </div>
+                </div>
+
+                
+                <div class="col-lg-4 mb-3">
+                    <div class="section-card h-100">
+                        <h3 class="section-title">🚗 Add City Vehicle</h3>
+                        <div class="mb-3">
+                            <select class="form-select" id="vehicleTypeDropdownForCityVehicle">
+                                <option value="">Loading...</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="submitCityVehicle()">Add Vehicle Type</button>
+                    </div>
+                </div>
+
+                
+                <div class="col-lg-4 mb-3">
+                    <div class="section-card h-100">
+                        <h3 class="section-title">Add City Tax</h3>
+                        <div class="mb-2">
+                            <input type="text" id="startTime" class="form-control" placeholder="Start time" />
+                        </div>
+                        <div class="mb-2">
+                            <input type="text" id="endTime" class="form-control" placeholder="End time" />
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" id="taxAmount" class="form-control" placeholder="Tax amount" />
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="submitCityTax()">Add Tax Rule</button>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="section-card">
+                <h3 class="section-title">Add Vehicle Passing</h3>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <select class="form-select" id="cityDropdown">
+                            <option value="">Select city</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" id="vehicleName" class="form-control" placeholder="License plate" />
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="vehicleTypeDropdown">
+                            <option value="">Select vehicle type</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" id="vehicleDateTime" class="form-control" placeholder="Date & time" />
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary w-100" onclick="submitVehicleData()">Submit Vehicle Passing</button>
+                    </div>
+                </div>
+            </div>
+
+        <div class="section-card">
+            <h3 class="section-title">Get Vehicle Tax</h3>
+            <div class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label">City</label>
+                    <select class="form-select" id="cityDropdownForTax">
+                        <option value="">Select city</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="licensePlateTypeDropdown">
+                        <option value="">Select licensePlate</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-3">
+                    <label class="form-label">Date</label>
+                    <input type="text" id="taxDate" class="form-control" placeholder="Select date" />
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary w-100" onclick="getVehicleTax()">Get Tax</button>
+                </div>
+            </div>
+            <div id="taxResult" class="mt-3" style="display: none;">
+                <div class="alert alert-success">
+                    <h5 class="mb-2">Tax Amount:</h5>
+                    <h3 class="mb-0"><strong id="taxAmountValue">0</strong> <small>Currency</small></h3>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    @section Scripts {
+    <script>
+        var selectedCityId = null;
+        flatpickr("#taxDate", {
+            dateFormat: "Y/m/d",
+            maxDate: "2013-12-31"
+        });
+        
+        flatpickr("#holidayDate", {
+            dateFormat: "Y/m/d",
+            maxDate: "2013-12-31"
+        });
+
+        flatpickr("#startTime", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
+        });
+
+        flatpickr("#endTime", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
+        });
+
+        flatpickr("#vehicleDateTime", {
+            enableTime: true,
+            dateFormat: "Y/m/d H:i:S",
+            time_24hr: true,
+            enableSeconds: true,
+            maxDate: "2013-12-31"
+        });
+
+        $(document).ready(function (){
+            console.log("ready");
+            GetAllCities();
+            loadVehicleTypes();
+            loadVehicleTypesForCityVehicle();
+            GetAlllicensePlates();
+        })
+
+        function GetAllCities(){
+            $.ajax({
+                type: "GET",
+                url: "/City/GetAllCities",
+                success: function (response) {
+                    buildCityGrid(response.data);
+                    populateCityDropdown(response.data);
+                    populatecityDropdownForTax(response.data);
+                    
+                }
+            });
+        }
+
+        function GetAlllicensePlates(){
+            $.ajax({
+                type: "GET",
+                url: "/Vehicle/GetAllVehicles",
+                success: function (response) {
+                    var dropdown = $('#licensePlateTypeDropdown');
+                    dropdown.empty();
+                    dropdown.append('<option value="">-- Select licensePlate --</option>');
+                    $.each(response.data, function(index, item) {
+                        dropdown.append($('<option></option>')
+                            .attr('value', item.id)
+                            .text(item.licensePlate));
+                    });
+
+                }
+            });
+        }
+
+        function buildCityGrid(data){
+            $("#CityGrid").empty();
+            for(let i = 0; i < data.length; i++){
+                $("#CityGrid").append(`<tr data-cityId="${data[i].id}" onclick="CityIsSelected(this)">
+                                        <td>${data[i].id}</td>
+                                        <td>${data[i].name}</td>
+                                        </tr>`
+                )
+            }
+        }
+
+        function AddCity(){
+            var name = $("#cityName").val();
+            $.ajax({
+                type: "POST",
+                data: { cityName: name },
+                url: "/City/AddCity",
+                success: function (response) {
+                    if(response.success){
+                        alert(response.message);
+                        GetAllCities();
+                        $("#cityName").val('');
+                    }
+                    else{
+                        alert(response.message);
+                    }
+                },
+                error: function (response){
+                    alert(response.message);
+                }
+            });
+        }
+
+        function loadVehicleTypes() {
+            $.ajax({
+                url: '/Vehicle/GetAllVehicleTypes',
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        populateVehicleTypeDropdown(response.data);
+                    } else {
+                        alert(response.message)
+                    }
+                },
+                error: function(error) {
+                    $('#vehicleTypeDropdown').html('<option value="">Error loading data</option>');
+                }
+            });
+        }
+
+        function loadVehicleTypesForCityVehicle() {
+            $.ajax({
+                url: '/Vehicle/GetAllVehicleTypes',
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        var dropdown = $('#vehicleTypeDropdownForCityVehicle');
+                        dropdown.empty();
+                        dropdown.append('<option value="">-- Select Vehicle Type --</option>');
+                        $.each(response.data, function(index, item) {
+                            dropdown.append($('<option></option>')
+                                .attr('value', item.id)
+                                .text(item.name));
+                        });
+                    } else {
+                        alert(response.message)
+                    }
+                },
+                error: function(error) {
+                    $('#vehicleTypeDropdownForCityVehicle').html('<option value="">Error loading data</option>');
+                }
+            });
+        }
+
+        function populateVehicleTypeDropdown(data) {
+            var dropdown = $('#vehicleTypeDropdown');
+            dropdown.empty();
+            dropdown.append('<option value="">-- Select Vehicle Type --</option>');
+            $.each(data, function(index, item) {
+                dropdown.append($('<option></option>')
+                    .attr('value', item.id)
+                    .text(item.name));
+            });
+        }
+
+        function populateCityDropdown(data) {
+            var dropdown = $('#cityDropdown');
+            dropdown.empty();
+            dropdown.append('<option value="">-- Select City --</option>');
+            $.each(data, function(index, item) {
+                dropdown.append($('<option></option>')
+                    .attr('value', item.id)
+                    .text(item.name));
+            });
+        }
+
+        function populatecityDropdownForTax(data) {
+            var dropdown = $('#cityDropdownForTax');
+            dropdown.empty();
+            dropdown.append('<option value="">-- Select City --</option>');
+            $.each(data, function(index, item) {
+                dropdown.append($('<option></option>')
+                    .attr('value', item.id)
+                    .text(item.name));
+            });
+        }
+
+        function submitVehicleData() {
+            const data = {
+                LicensePlate: $('#vehicleName').val(),
+                VehicleTypeId: $('#vehicleTypeDropdown').val(),
+                PassingDateTime: $('#vehicleDateTime').val(),
+                CityId: $('#cityDropdown').val()
+            };
+
+            $.ajax({
+                url: '/VehiclePassing/AddVehiclePassing',
+                type: "POST",
+                data: data,
+                success: function(response) {
+                    alert('Added successfully!');
+                    $('#vehicleName').val('');
+                    $('#vehicleTypeDropdown').val('');
+                    $('#vehicleDateTime').val('');
+                    $('#cityDropdown').val('');
+                    GetAlllicensePlates();
+                },
+                error: function(error) {
+                    alert('Error happened');
+                }
+            });
+        }
+
+        function CityIsSelected(element){
+            $('#CityGrid tr').removeClass('selected');
+            $(element).addClass('selected');
+            selectedCityId = $(element).data('cityid');
+        }
+
+        function submitHolidayDate() {
+            if (!selectedCityId) {
+                alert('Please select a city first!');
+                return;
+            }
+
+            const data = {
+                CityId: selectedCityId,
+                HolidayDate: $('#holidayDate').val()
+            };
+
+             $.ajax({
+                url: '/City/AddCityHoliday',
+                type: "POST",
+                data: data,
+                success: function(response) {
+                    if(response.success){
+                        alert(response.message);
+
+                        $('#holidayDate').val('');
+                    }
+                    else{
+                        alert(response.message);
+                    }
+                    
+                    
+                },
+                error: function(error) {
+                    alert('Error happened');
+                }
+            });
+        }
+
+        function submitCityVehicle() {
+            if (!selectedCityId) {
+                alert('Please select a city first!');
+                return;
+            }
+
+            const data = {
+                CityId: selectedCityId,
+                VehicleTypeId: $('#vehicleTypeDropdownForCityVehicle').val()
+            };
+
+            $.ajax({
+                url: '/City/AddCityVehicle',
+                type: "POST",
+                data: data,
+                success: function(response) {
+                    if(response.success){
+                        alert(response.message);
+
+                        $('#vehicleTypeDropdownForCityVehicle').val('');
+                    }
+                    else{
+                        alert(response.message);
+                    }
+                },
+                error: function(error) {
+                    alert('Error happened');
+                }
+            });
+        }
+
+        function submitCityTax() {
+            if (!selectedCityId) {
+                alert('Please select a city first!');
+                return;
+            }
+
+            const data = {
+                CityId: selectedCityId,
+                StartTime: $('#startTime').val(),
+                EndTime: $('#endTime').val(),
+                Amount: $('#taxAmount').val()
+            };
+
+           $.ajax({
+                url: '/City/AddCityTax',
+                type: "POST",
+                data: data,
+                success: function(response) {
+                    if(response.success){
+                        alert(response.message);
+
+                        $('#startTime').val('');
+                        $('#endTime').val('');
+                        $('#taxAmount').val('');
+                        
+                    }
+                    else{
+                        alert(response.message);
+                    }
+                    
+                },
+                error: function(error) {
+                    alert('Error happened');
+                }
+            });
+        }
+
+        function getVehicleTax() {
+
+            const vehicleId = $('#licensePlateTypeDropdown').val();
+            const cityId = $('#cityDropdownForTax').val();
+            const date = $('#taxDate').val();
+
+            if (!vehicleId || !cityId || !date) {
+                alert('Please fill in all fields!');
+                return;
+            }
+
+            const data = {
+                VehicleId: vehicleId,
+                CityId: cityId,
+                Date: date
+            };
+
+            $.ajax({
+                url: '/Tax/GetVehicleTax',
+                type: 'get',
+                data: data,
+                success: function(response) {
+                    
+                    $('#taxAmountValue').text(response);
+                    $('#taxResult').slideDown();
+                },
+                error: function(error) {
+                    alert('Error getting tax amount');
+                    $('#taxResult').slideUp();
+                }
+            });
+        }
+    </script>
+    }
+
+
+
+
+
+
